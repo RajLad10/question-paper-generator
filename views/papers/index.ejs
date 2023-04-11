@@ -1,0 +1,104 @@
+<%- include('../partials/header'); %>
+    <div class="container">
+        <div class="jumbotron container">
+            <h1 class="display-4">Papers Library</h1>
+            <p class="lead">This is a platform where you can automatically generate a question paper based on your
+                preferences.
+            </p>
+            <hr class="my-4">
+            <p>Go check out our question library by clicking the button below.</p>
+            <div class="btn-group btn-group-toggle">
+                <a class="btn btn-primary btn-lg" href="/papers/generate" role="button">Generate Question Paper</a>
+                <button type="button" data-toggle="collapse" data-target="#search" aria-expanded="false" aria-controls="search" class="btn btn-dark btn-lg">Search Question Papers</button>
+            </div>
+        </div>
+
+        <div class="collapse" id="search">
+            <div class="card border-light shadow p-3 bg-white rounded mb-4 d-inline-flex p-2" style="width: 1110px;">
+                <form action="/papers/search" method="POST">
+                    <div class="row">
+                        <div class="col">
+                            <select class="form-control col" name="format">
+                                <option value="">Select Format</option>
+                                <option value="MCQ">Multiple choice questions</option>
+                                <option value="FITB">Fill in the blanks</option>
+                                <option value="TF">True/False</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <input type="text" name="subject" class="form-control" placeholder="Enter Subject">
+                        </div>
+                        <div class="col">
+                            <input type="text" name="topic" class="form-control" placeholder="Enter topic">
+                        </div>
+                        <div class="col">
+                            <select class="form-control" name="difficulty">
+                                <option value=""> Select difficulty </option>
+                                <option value="1"> Easy </option>
+                                <option value="2"> Medium </option>
+                                <option value="3"> Hard </option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary" style="width: 200px;">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <% paper.forEach(function(pap){ %>
+            <% var randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26)); %>
+            <% var id=randLetter + Date.now(); %>
+            <div class="card border-dark mb-3 d-inline-flex p-2" style="width: 1110px;">
+                <div class="row no-gutters">
+                    <div class="col-md-1 align-self-center">
+                        <h3 class="font-weight-bold text-center"><%= pap.name %></h3>
+                    </div>
+                    <div class="col-md-5 align-self-center">
+                        <div class="card-body">
+                            <!-- questions here -->
+                        </div>
+                    </div>
+                    <div class="col-md-3 align-self-center">
+                        <div class="card-body">
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <button type="button" class="btn btn-primary"><%= pap.subject %></button>
+                                <!-- <button type="button" class="btn btn-dark"><%= pap.topic %></button>
+                                <% if(pap.difficulty == 1) {%>
+                                    <button type="button" class="btn btn-success">Easy</button>
+                                    <% } else if (pap.difficulty == 2) { %>
+                                    <button type="button" class="btn btn-warning">Medium</button>
+                                    <% } else { %>
+                                    <button type="button" class="btn btn-danger">Hard</button>
+                                    <% } %>
+                                </button> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 align-self-center">
+                        <div class="card-body">
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <button type="button" class="btn btn-outline-primary" data-toggle="collapse"
+                                    data-target="#<%=id%>" aria-expanded="false"
+                                    aria-controls="<%=id%>">
+                                    View </button>
+                                    
+                                <!-- <button type="button" class="btn btn-outline-success" onclick="location.href='/papers/<%=paper._id%>/edit';"> Edit </button> -->
+                                <button type="button" class="btn btn-outline-danger" onclick="location.href='/papers/<%=pap._id%>';"> Delete </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse" id="<%=id%>" >
+                <div class="card border-dark mb-3 d-inline-flex p-2" style="width: 1110px;">   
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><%= pap.question %></li>
+                        <!-- <li class="list-group-item card-subtitle mb-2 text-muted"><%= pap.solution %></li> -->
+                    </ul>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+    <%- include('../partials/footer'); %>

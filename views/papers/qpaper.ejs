@@ -1,0 +1,28 @@
+<%- include('../partials/header'); %>
+    <div>
+        <h1> Welcome to Qpaper</h1>
+        
+        <!-- <% paper.forEach(function(data){ %>
+        <%= data.format %>
+        <%= data.name %>
+        <% if(data.difficulty == 1) {%>
+            Easy
+            <% } else if (data.difficulty == 2) { %>
+            Medium
+            <% } else { %>
+            Hard
+            <% } %>
+        <%= data.topic %>
+        <%= data.subject %>
+
+        <br>
+        <% }); %> -->
+
+
+        <% question.forEach(function(question){ %>
+           
+            <%= question.question %>
+            
+            <br>
+            <% }); %>
+    </div>

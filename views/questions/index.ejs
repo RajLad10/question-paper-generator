@@ -1,0 +1,99 @@
+<%- include('../partials/header'); %>
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4">Question Library</h1>
+        <hr class="my-4">
+        <p>Add/Search questions to/from your library by clicking the buttons below</p>
+        <div class="btn-group btn-group-toggle">
+            <a class="btn btn-primary btn-lg" href="/questions/add" role="button">Add Question</a>
+            <button type="button" data-toggle="collapse" data-target="#search" aria-expanded="false" aria-controls="search" class="btn btn-dark btn-lg">Search Questions</button>
+        </div>
+    </div>
+    <div class="collapse" id="search">
+        <div class="card border-light shadow p-3 bg-white rounded mb-4 d-inline-flex p-2" style="width: 1110px;">
+            <form action="/questions/search" method="POST">
+                <div class="row">
+                    <div class="col">
+                        <select class="form-control col" name="format">
+                            <option value="">Select Format</option>
+                            <option value="MCQ">Multiple choice questions</option>
+                            <option value="FITB">Fill in the blanks</option>
+                            <option value="TF">True/False</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <input type="text" name="subject" class="form-control" placeholder="Enter Subject">
+                    </div>
+                    <div class="col">
+                        <input type="text" name="topic" class="form-control" placeholder="Enter topic">
+                    </div>
+                    <div class="col">
+                        <select class="form-control" name="difficulty">
+                            <option value=""> Select difficulty </option>
+                            <option value="1"> Easy </option>
+                            <option value="2"> Medium </option>
+                            <option value="3"> Hard </option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary" style="width: 200px;">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <% questions.forEach(function(question){ %>
+        <% var randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26)); %>
+        <% var id=randLetter + Date.now(); %>
+        <div class="card border-dark mb-3 d-inline-flex p-2" style="width: 1110px;">
+            <div class="row no-gutters">
+                <div class="col-md-1 align-self-center">
+                    <h3 class="font-weight-bold text-center"><%= question.format %></h3>
+                </div>
+                <div class="col-md-5 align-self-center">
+                    <div class="card-body">
+                        <p class="card-text"><%= question.question.slice(0,80) %></p>
+                    </div>
+                </div>
+                <div class="col-md-3 align-self-center">
+                    <div class="card-body">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <button type="button" class="btn btn-primary"><%= question.subject %></button>
+                            <button type="button" class="btn btn-dark"><%= question.topic %></button>
+                            <% if(question.difficulty == 1) {%>
+                                <button type="button" class="btn btn-success">Easy</button>
+                                <% } else if (question.difficulty == 2) { %>
+                                <button type="button" class="btn btn-warning">Medium</button>
+                                <% } else { %>
+                                <button type="button" class="btn btn-danger">Hard</button>
+                                <% } %>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 align-self-center">
+                    <div class="card-body">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <button type="button" class="btn btn-outline-primary" data-toggle="collapse"
+                                data-target="#<%=id%>" aria-expanded="false"
+                                aria-controls="<%=id%>">
+                                View </button>
+                            <button type="button" class="btn btn-outline-success" onclick="location.href='/questions/<%=question._id%>/edit';"> Edit </button>
+                            <button type="button" class="btn btn-outline-danger" onclick="location.href='/questions/<%=question._id%>';"> Delete </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="collapse" id="<%=id%>" >
+            <div class="card border-dark mb-3 d-inline-flex p-2" style="width: 1110px;">   
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><%= question.question %></li>
+                    <li class="list-group-item card-subtitle mb-2 text-muted"><%= question.solution %></li>
+                </ul>
+            </div>
+        </div>
+    <% }); %>
+</div>
+
+<%- include('../partials/footer'); %>

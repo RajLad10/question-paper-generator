@@ -1,0 +1,57 @@
+<%- include('../partials/header'); %>
+<div class="container">
+    <% papers.forEach(function(pap){ %>
+    <% var randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26)); %>
+    <% var id=randLetter + Date.now(); %>
+    <div class="card border-dark mb-3 d-inline-flex p-2" style="width: 1110px;">
+        <div class="row no-gutters">
+            <div class="col-md-1 align-self-center">
+                <h3 class="font-weight-bold text-center"><%= pap.name %></h3>
+            </div>
+            <div class="col-md-5 align-self-center">
+                <div class="card-body">
+                    <p class="card-text"><%= pap.question %></p>
+                </div>
+            </div>
+            <div class="col-md-3 align-self-center">
+                <div class="card-body">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <button type="button" class="btn btn-primary"><%= pap.subject %></button>
+                        <button type="button" class="btn btn-dark"><%= pap.topic %></button>
+                        <% if(pap.difficulty == 1) {%>
+                        <button type="button" class="btn btn-success">Easy</button>
+                        <% } else if (pap.difficulty == 2) { %>
+                        <button type="button" class="btn btn-warning">Medium</button>
+                        <% } else { %>
+                        <button type="button" class="btn btn-danger">Hard</button>
+                        <% } %>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 align-self-center">
+                <div class="card-body">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <button type="button" class="btn btn-outline-primary" data-toggle="collapse"
+                            data-target="#<%=id%>" aria-expanded="false" aria-controls="<%=id%>">
+                            View </button>
+                        <button type="button" class="btn btn-outline-success"
+                            onclick="location.href='/papers/<%=pap._id%>/edit';"> Edit </button>
+                        <button type="button" class="btn btn-outline-danger"
+                            onclick="location.href='/papers/<%=pap._id%>';"> Delete </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="collapse" id="<%=id%>">
+        <div class="card border-dark mb-3 d-inline-flex p-2" style="width: 1110px;">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><%= pap.question %></li>
+                <li class="list-group-item card-subtitle mb-2 text-muted"><%= pap.solution %></li>
+            </ul>
+        </div>
+    </div>
+    <% }); %>
+</div>
+<%- include('../partials/footer'); %>
